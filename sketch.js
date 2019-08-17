@@ -36,6 +36,7 @@ function setup() {
         document.body.appendChild(input);
 
         input.addEventListener('input', function(evt) {
+            simulateKeyPress(input.value);
             input.value = "";
         });
     }
@@ -48,6 +49,10 @@ function draw() {
 }
 
 function keyPressed() {
+    simulateKeyPress(key);
+}
+
+function simulateKeyPress(key) {
     if (key.length == 1 && key.match(/[a-zA-Z]/))
         game.guess(key);
     else if (key == ' ' && game.completed) {
