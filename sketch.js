@@ -8,19 +8,39 @@ function preload() {
 var game;
 
 function setup() {
+    var isTouch = (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));
+
+    let w = document.documentElement.clientWidth;
+    let h = document.documentElement.clientHeight - 68 - 24;
+    if (isTouch) h -= 0.5 * h
+    createCanvas(w, h);
+    smooth();
+
+    let max = 10;
+    if (width < 1000) {
+        max = 7;
+    }
     for (let i = 0; i < words_raw.length; i++) {
         let word = words_raw[i];
-        if (word.length >= 3 && word.length <= 10) {
+        if (word.length >= 3 && word.length <= max) {
             words.push(word);
         }
     }
 
-    let w = document.documentElement.clientWidth;
-    let h = document.documentElement.clientHeight - 68 - 24;
-    createCanvas(w, h);
-    smooth();
     game = new Hangman(words);
+
+    if (isTouch) {
+        var input = document.createElement("input");
+        input.setAttribute("type", "text");
+        input.setAttribute("placeholder", "Tap for keyboard");
+        document.body.appendChild(input);
+
+        input.addEventListener('input', function(evt) {
+            input.value = "";
+        });
+    }
 }
+
 
 function draw() {
     background(255);
@@ -53,7 +73,11 @@ class Hangman {
     draw() {
         fill(0);
         textAlign(CENTER);
-        textSize(120);
+        if (width < 1000) {
+            textSize(100);
+        } else {
+            textSize(120);
+        }
         textFont("Poppins");
         text(this.underscores, width / 2, height / 2);
         textSize(40);
