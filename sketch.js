@@ -48,6 +48,12 @@ function draw() {
     game.draw();
 }
 
+function windowResized() {
+    let w = document.documentElement.clientWidth;
+    let h = document.documentElement.clientHeight - 68 - 24;
+    resizeCanvas(w, h);
+}
+
 function keyPressed() {
     simulateKeyPress(key);
 }
